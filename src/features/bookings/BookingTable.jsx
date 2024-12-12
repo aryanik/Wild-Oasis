@@ -4,13 +4,13 @@ import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import Empty from "../../ui/Empty";
 import Spinner from "../../ui/Spinner";
-import Pagination from "../../ui/Pagination"
+import Pagination from "../../ui/Pagination";
 import { useBookings } from "./useBookings";
 
 function BookingTable() {
-  const {isPending, bookings, error, count} = useBookings();
+  const { isPending, bookings, error, count } = useBookings();
   if (isPending) return <Spinner />;
-   if(!bookings.length) return <Empty resource="bookings"></Empty>
+  if (!bookings.length) return <Empty resource="bookings"></Empty>;
 
   return (
     <Menus>

@@ -10,18 +10,8 @@ import { useCreateCabin } from "./useCreateCabin";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import Button from "../../ui/Button";
 
-// const TableRow = styled.div`
-//   display: grid;
-//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-//   column-gap: 2.4rem;
-//   align-items: center;
-//   padding: 1.4rem 2.4rem;
-
-//   &:not(:last-child) {
-//     border-bottom: 1px solid var(--color-grey-100);
-//   }
-// `;
 
 const Img = styled.img`
   display: block;
@@ -50,7 +40,7 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
-export default function CabinRow({ cabin }) {
+export default function CabinRow({ cabin, hideFunction, onClick }) {
   const { isDeleting, deleteCabin } = useDeleteCabin();
   const { isCreating, createCabin } = useCreateCabin();
   const {
@@ -85,34 +75,43 @@ export default function CabinRow({ cabin }) {
       ) : (
         <span>&mdash;</span>
       )}
-      <div>
-        <Modal>
-          <Menus.Menu>
-            <Menus.Toggle id={CabinId} />
-            <Menus.List id={CabinId}>
-              <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
-                Duplicate
-              </Menus.Button>
-              <Modal.Open opens="edit">
-                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
-              </Modal.Open>
-              <Modal.Open opens="deleteCabin">
-                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
-              </Modal.Open>
-            </Menus.List>
-            <Modal.Window name="edit">
-              <CreateCabinForm cabinToEdit={cabin} />
-            </Modal.Window>
-            <Modal.Window name="deleteCabin">
-              <ConfirmDelete
-                resourceName="Cabin"
-                onConfirm={() => deleteCabin(CabinId)}
-                disabled={isDeleting}
-              />
-            </Modal.Window>
-          </Menus.Menu>
-        </Modal>
-      </div>
+      {hideFunction && (
+        <Price>{formatCurrency(regularPrice - (discount || 0))}</Price>
+      )}
+      {hideFunction && (<Button onClick={()=> onClick(cabin.id)}>Book</Button>)}
+      {!hideFunction && (
+        <div>
+          <Modal>
+            <Menus.Menu>
+              <Menus.Toggle id={CabinId} />
+              <Menus.List id={CabinId}>
+                <Menus.Button
+                  icon={<HiSquare2Stack />}
+                  onClick={handleDuplicate}
+                >
+                  Duplicate
+                </Menus.Button>
+                <Modal.Open opens="edit">
+                  <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                </Modal.Open>
+                <Modal.Open opens="deleteCabin">
+                  <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                </Modal.Open>
+              </Menus.List>
+              <Modal.Window name="edit">
+                <CreateCabinForm cabinToEdit={cabin} />
+              </Modal.Window>
+              <Modal.Window name="deleteCabin">
+                <ConfirmDelete
+                  resourceName="Cabin"
+                  onConfirm={() => deleteCabin(CabinId)}
+                  disabled={isDeleting}
+                />
+              </Modal.Window>
+            </Menus.Menu>
+          </Modal>
+        </div>
+      )}
     </Table.Row>
   );
 }

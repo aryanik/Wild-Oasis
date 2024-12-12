@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { PAGE_SIZE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
@@ -130,4 +129,18 @@ export async function deleteBooking(id) {
     throw new Error("Booking could not be deleted");
   }
   return data;
+}
+
+export async function createBooking(formValues){
+  const { data, error } = await supabase
+  .from('bookings')
+  .insert([formValues])
+  .select()
+
+  if (error) {
+    console.error(error);
+    throw new Error("Booking could not be deleted");
+  }
+
+return data;
 }

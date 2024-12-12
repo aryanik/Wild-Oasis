@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
 
 const StyledStat = styled.div`
@@ -53,7 +54,7 @@ function Stat({ icon, title, value, color }) {
       <Icon color={color}>{icon}</Icon>
       <Title>{title}</Title>
       <Value>{value}</Value>
-    </StyledStat>
+    </StyledStat >
   );
 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
 import { createContext, useContext, useState } from "react";
@@ -72,11 +71,13 @@ const MenuContext = createContext();
 
 function Menus({ children }) {
   const [openId, setOpenId] = useState("");
-  const [position, setPosition]= useState(null)
+  const [position, setPosition] = useState(null);
   const close = () => setOpenId("");
   const open = setOpenId;
   return (
-    <MenuContext.Provider value={{ openId, close, open, position, setPosition }}>
+    <MenuContext.Provider
+      value={{ openId, close, open, position, setPosition }}
+    >
       {children}
     </MenuContext.Provider>
   );
@@ -85,11 +86,12 @@ function Menus({ children }) {
 function Toggle({ id }) {
   const { openId, close, open, setPosition } = useContext(MenuContext);
   function handleClick(e) {
-    const rect = e.target.closest('button').getBoundingClientRect();
+    e.stopPropagation();
+    const rect = e.target.closest("button").getBoundingClientRect();
     setPosition({
-      x:window.innerWidth - rect.width - rect.x,
-      y:rect.y + rect.height + 8
-    })
+      x: window.innerWidth - rect.width - rect.x,
+      y: rect.y + rect.height + 8,
+    });
     openId === "" || openId !== id ? open(id) : close();
   }
 
@@ -101,22 +103,30 @@ function Toggle({ id }) {
 }
 
 function List({ id, children }) {
-  const { openId, position, close  } = useContext(MenuContext);
-  const ref = useOutsideClick(close);
+  const { openId, position, close } = useContext(MenuContext);
+  const ref = useOutsideClick(close, false);
   if (openId !== id) return null;
 
-  return createPortal(<StyledList position={position} ref={ref}>{children}</StyledList>, document.body);
+  return createPortal(
+    <StyledList position={position} ref={ref}>
+      {children}
+    </StyledList>,
+    document.body
+  );
 }
 
 function Button({ children, icon, onClick }) {
-  const {close} = useContext(MenuContext);
-  function handleClick(){
+  const { close } = useContext(MenuContext);
+  function handleClick() {
     onClick?.();
     close();
   }
   return (
     <li>
-      <StyledButton onClick={handleClick}>{icon}<span>{children}</span></StyledButton>
+      <StyledButton onClick={handleClick}>
+        {icon}
+        <span>{children}</span>
+      </StyledButton>
     </li>
   );
 }

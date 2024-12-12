@@ -14,6 +14,11 @@ import PageNotFound from "./pages/PageNotFound";
 import Booking from "./pages/Booking";
 import Checkin from "./pages/Checkin";
 import AppLayout from "./ui/AppLayout";
+import ProtectedRoute from "./ui/ProtectedRoute";
+import { DarkModeProvider } from "./context/DarkModeContext";
+import NewBookings from "./pages/NewBookings";
+import SelectCabin from "./features/cabins/SelectCabin";
+import FinalBooking from "./features/bookings/FinalBooking";
 
 
 const queryClient = new QueryClient({
@@ -30,17 +35,21 @@ const queryClient = new QueryClient({
 export default function App() {
   return (
     <>
+    <DarkModeProvider>
     <QueryClientProvider client={queryClient}>
     <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
           {/* Layout route with nested routes */}
-          <Route element={<AppLayout />}>
+          <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="new-booking" element={<NewBookings />} />
+            <Route path="select-cabin" element={<SelectCabin />} />
             <Route path="bookings/:bookingId" element={<Booking />} />
+            <Route path="finalBooking" element={<FinalBooking />} />
             <Route path="checkin/:bookingId" element={<Checkin />} />
             <Route path="cabins" element={<Cabins />} />
             <Route path="users" element={<Users />} />
@@ -73,6 +82,7 @@ export default function App() {
       }}
       />
       </QueryClientProvider>
+      </DarkModeProvider>
     </>
   );
 }

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -8,6 +7,7 @@ import {
   HiOutlineHomeModern,
   HiOutlineUsers,
 } from "react-icons/hi2";
+import { MdOutlineCreateNewFolder } from "react-icons/md";
 
 const NavList = styled.ul`
   display: flex;
@@ -57,7 +57,7 @@ const StyledNavLink = styled(NavLink)`
 export default function MainNav() {
   return (
     <nav>
-       <NavList>
+      <NavList>
         <li>
           <StyledNavLink to="/dashboard">
             <HiOutlineHome />
@@ -70,6 +70,13 @@ export default function MainNav() {
             <span>Bookings</span>
           </StyledNavLink>
         </li>
+        <li>
+          <StyledNavLink to="/new-booking">
+            <MdOutlineCreateNewFolder />
+            <span>New Booking</span>
+          </StyledNavLink>
+        </li>
+
         <li>
           <StyledNavLink to="/cabins">
             <HiOutlineHomeModern />
